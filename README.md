@@ -11,8 +11,8 @@
 
 # JokerQuery
 
-The Joker is a cute sql query builder
-with Joker can implement most complex queries with sugar syntax and high performance
+The JokerQuery is a cute sql query builder
+with JokerQuery can implement most complex queries with sugar syntax and high performance
 
 # Features
 
