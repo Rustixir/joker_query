@@ -2,8 +2,8 @@
 
 <div align="center">
   <!-- Downloads -->
-  <a href="https://crates.io/crates/joker">
-    <img src="https://img.shields.io/crates/d/joker.svg?style=flat-square"
+  <a href="https://crates.io/crates/joker_query">
+    <img src="https://img.shields.io/crates/d/joker_query.svg?style=flat-square"
       alt="Download" />
   </a>
 </div>
