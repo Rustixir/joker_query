@@ -1,0 +1,18 @@
+[package]
+name = "joker"
+version = "0.1.0"
+edition = "2021"
+authors = ["danyalmhai@gmail.com"]
+readme = "README.md"
+description = "high performance, sugar syntax sql query build"
+license = "Apache-2.0"
+keywords = ["sql", "postgres", "sqlite", "mysql", "query_builder"]
+homepage   = "https://github.com/Rustixir/joker"
+repository = "https://github.com/Rustixir/joker"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+dashmap = "5.5.3"
+lazy_static = "1.4.0"
+uuid = { version = "1.5.0", features = ["v4"] }
