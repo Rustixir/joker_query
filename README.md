@@ -1,3 +1,14 @@
+![Joker](https://github.com/Rustixir/joker/blob/main/logo.png)
+
+<div align="center">
+  <!-- Downloads -->
+  <a href="https://crates.io/crates/joker">
+    <img src="https://img.shields.io/crates/d/joker.svg?style=flat-square"
+      alt="Download" />
+  </a>
+</div>
+
+
 # Joker
 
 The Joker is a cute sql query builder
