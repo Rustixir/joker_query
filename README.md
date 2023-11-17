@@ -1,4 +1,15 @@
-# Joker
+![JokerQuery](https://github.com/Rustixir/joker/blob/main/logo.png)
+
+<div align="center">
+  <!-- Downloads -->
+  <a href="https://crates.io/crates/joker_query">
+    <img src="https://img.shields.io/crates/d/joker_query.svg?style=flat-square"
+      alt="Download" />
+  </a>
+</div>
+
+
+# JokerQuery
 
 The Joker is a cute sql query builder
 with Joker can implement most complex queries with sugar syntax and high performance
@@ -13,12 +24,8 @@ with Joker can implement most complex queries with sugar syntax and high perform
 
 
 # Benchmark 
-<<<<<<< Updated upstream
-- almost all complex queries run under 5us
-=======
 - almost all complex queries run under 5us
 
 
 # Crates
 joker_query = "0.1.1"
->>>>>>> Stashed changes

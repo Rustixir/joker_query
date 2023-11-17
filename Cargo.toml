@@ -1,5 +1,5 @@
 [package]
-name = "joker"
+name = "joker_query"
 version = "0.1.1"
 edition = "2021"
 authors = ["danyalmhai@gmail.com"]
@@ -7,8 +7,8 @@ readme = "README.md"
 description = "The joker_query is a sugar syntax query builder"
 license = "Apache-2.0"
 keywords = ["sql", "postgres", "sqlite", "mysql", "query_builder"]
-homepage   = "https://github.com/Rustixir/joker"
-repository = "https://github.com/Rustixir/joker"
+homepage   = "https://github.com/Rustixir/joker_query"
+repository = "https://github.com/Rustixir/joker_query"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
