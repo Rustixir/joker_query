@@ -1,4 +1,4 @@
-![Joker](https://github.com/Rustixir/joker/blob/main/logo.png)
+![JokerQuery](https://github.com/Rustixir/joker/blob/main/logo.png)
 
 <div align="center">
   <!-- Downloads -->
@@ -9,7 +9,7 @@
 </div>
 
 
-# Joker
+# JokerQuery
 
 The Joker is a cute sql query builder
 with Joker can implement most complex queries with sugar syntax and high performance
