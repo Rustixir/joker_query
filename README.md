@@ -25,3 +25,6 @@ with Joker can implement most complex queries with sugar syntax and high perform
 
 # Benchmark 
 - almost all complex queries run under 5us
+
+# Crates
+joker_query = "0.1.1"
