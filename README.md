@@ -20,7 +20,8 @@ with JokerQuery can implement most complex queries with sugar syntax and high pe
 
 - (SubQuery) - Joker support Exist operator, you can write complete subQuery inside it
 
-- (Prepare Statement) - Joker also support Prepare Statement
+- (Prepare Statement) - Joker also support Prepare statement, here refers to the mechanism provided by JokerQuery to prepare SQL statements and efficiently build them with different parameter values.
+
 
 
 # Example 
