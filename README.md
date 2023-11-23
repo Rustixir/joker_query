@@ -12,7 +12,7 @@
 # JokerQuery
 
 The JokerQuery is a cute sql query builder
-with JokerQuery can implement most complex queries with sugar syntax and high performance
+with JokerQuery can implement most complex queries with sugar syntax
 
 # Features
 
@@ -20,66 +20,34 @@ with JokerQuery can implement most complex queries with sugar syntax and high pe
 
 - (SubQuery) - Joker support Exist operator, you can write complete subQuery inside it
 
-- (Prepare Statement) - Joker also support Prepare statement, here refers to the mechanism provided by JokerQuery to prepare SQL statements and efficiently build them with different parameter values.
-
 
 
 # Example 
 
 ```
-Select::
-     cols(vec!["id, age, fullname"])
-    .distinct()
-    .from("customer")
-    .inner_join("merchant").on("customer.id", "customer_id")
-    .left_join("product").on("customer.id", "customer_id")
-    .where_by("age", Op::Between(10.into(), 25.into()))
-    .and("fullname", Op::Like("full%"))
-    .and("fullname", Op::NotIn(vec!["danyal", "danyalmh", "danyalai"].into()))
-    .group_by(vec!["merchant_id"])
-    .having(&func_count_id, Op::None)            
-    .order_by("fullname")
-    .order_by_desc("age")
-    .limit(10)
-    .offset(5)
-    .build();
-```
-
-** Prepare Statement: 
+  Select::
+      cols(vec!["id, age, fullname"])
+      .distinct()
+      .from("customer")
+      .inner_join("merchant").on("customer.id", "customer_id")
+      .left_join("product").on("customer.id", "customer_id")
+      .where_by("age", Op::between(10, 25))
+      .and("fullname", Op::like("full%"))
+      .and("fullname", Op::not_in(vec!["danyal", "danyalmh", "danyalai"]))
+      .group_by(vec!["merchant_id"])
+      .having(&Func::count("id"), Op::eq(2025000))            
+      .order_by("fullname")
+      .order_by_desc("age")
+      .limit(10)
+      .offset(5)
+      .build();
+        
 
 ```
-let query_ref = 
-            Select::
-                cols(vec!["id, age, fullname"])
-                .distinct()
-                .from("customer")
-                .inner_join("merchant").on("customer.id", "customer_id")
-                .left_join("product").on("customer.id", "customer_id")
-                .where_by("age", Op::Between(Value::Param, Value::Param))
-                .and("fullname", Op::Like(Value::param_str()))
-                .and("fullname", Op::NotIn(vec![Value::Param, Value::Param, Value::Param].into()))
-                .group_by(vec!["merchant_id"])
-                .having(&func_count_id, Op::None)            
-                .order_by("fullname")
-                .order_by_desc("age")
-                .limit(10)
-                .offset(5)
-                .prepare();
 
-let query = Select::stmt(&query_ref).unwrap();
-let res = query.bind(vec![
-            10.into(), 
-            25.into(), 
-            "full%".into(),
-            "danyal".into(),
-            "danyalmh".into(),
-            "danyalai".into()
-         ]).unwrap();
-
-```
 
 # Benchmark 
 - almost all complex queries run under 5us
 
 # Crates
-joker_query = "0.1.1"
+joker_query = "1.0.0"

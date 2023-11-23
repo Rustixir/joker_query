@@ -12,7 +12,7 @@ mod tests {
     use crate::query::{
         operator::Op,
         select::Select,
-        func::Func, condition::Case, expression::Exp,
+        func::Func,
     };
 
 
