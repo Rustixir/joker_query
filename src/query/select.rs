@@ -1,32 +1,12 @@
 use std::fmt::Display;
-
-use dashmap::{DashMap, mapref::one::Ref};
-
 use super::{
     having::{Having, HavingInfo},
     join::{Join, JoinInfo, JoinType},
     operator::Op,
     order_by::{Order, OrderType},
-    where_by::{Where, WhereInfo}, statement::{Statement, self}, value::Value,
+    where_by::{Where, WhereInfo},
 };
 
-
-
-
-lazy_static! {
-    static ref SELECT_CACHE: DashMap<String, Statement> = DashMap::new();
-}
-
-
-pub struct Stmt<'a> {
-    stmt: Ref<'a, String, Statement>
-}
-
-impl<'a> Stmt<'a> {
-    pub fn bind(self, params: Vec<Value<'a>>) -> Result<String, statement::Error> {
-        self.stmt.value().bind(params)
-    }
-}
 
 
 pub struct Select<'a> {
@@ -127,13 +107,6 @@ impl<'a> Select<'a> {
         }
     }
 
-    pub fn stmt(key: &String) -> Option<Stmt> {
-        match SELECT_CACHE.get(key) {
-            Some(stmt) => Some(Stmt { stmt }),
-            None => None,
-        }
-    }
-
     pub fn any() -> Self {
         Select::new()
     }
@@ -190,7 +163,8 @@ impl<'a> Select<'a> {
         return self;
     }
 
-    pub fn having(self, left: &'a str, op: Op<'a>) -> Having<'a> {
+    pub fn having(self, left: &'a str, op: Op<'a>) -> Having<'a> 
+    where{
         Having::new(self, left, op)
     }
 
@@ -210,12 +184,6 @@ impl<'a> Select<'a> {
         format!("{}", self)
     }
 
-    pub fn prepare(&self) -> String {
-        let query = self.build();    
-        let statement = Statement::from(query);
-        let key = uuid::Uuid::new_v4().to_string();
-        let _ = SELECT_CACHE.insert(key.clone(), statement);
-        return key
-    }
+
 
 }
