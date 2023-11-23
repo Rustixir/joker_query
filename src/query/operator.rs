@@ -1,6 +1,6 @@
 use std::fmt::Display;
 
-use super::{select::Select, value::Value, array::Array};
+use super::{array::Array, condition::Case, select::Select, value::Value};
 
 pub enum Op<'a> {
     IsNull,
@@ -33,9 +33,65 @@ pub enum Op<'a> {
 
     Not(Value<'a>),
 
-    Case(Value<'a>),
+    Case(Case<'a>),
 
     None,
+}
+
+impl<'a> Op<'a> {
+
+    pub fn is_null() -> Self {
+        Op::IsNull
+    }
+    pub fn eq(value: impl Into<Value<'a>>) -> Self {
+        Op::Eq(value.into())
+    }
+    pub fn neq(value: impl Into<Value<'a>>) -> Self {
+        Op::Neq(value.into())
+    }
+    pub fn gt(value: impl Into<Value<'a>>) -> Self {
+        Op::Gt(value.into())
+    }
+    pub fn gte(value: impl Into<Value<'a>>) -> Self {
+        Op::Gte(value.into())
+    }
+    pub fn lt(value: impl Into<Value<'a>>) -> Self {
+        Op::Lt(value.into())
+    }
+    pub fn lte(value: impl Into<Value<'a>>) -> Self {
+        Op::Lte(value.into())
+    }
+    pub fn nlt(value: impl Into<Value<'a>>) -> Self {
+        Op::Nlt(value.into())
+    }
+    pub fn ngt(value: impl Into<Value<'a>>) -> Self {
+        Op::Ngt(value.into())
+    }
+    pub fn between(from: impl Into<Value<'a>>, to: impl Into<Value<'a>>) -> Self {
+        Op::Between(from.into(), to.into())
+    }
+    pub fn exists(sub: Select<'a>) -> Self {
+        Op::Exists(sub)
+    }
+    pub fn in_array(value: impl Into<Array<'a>>) -> Self {
+        Op::In(value.into())
+    }
+    pub fn not_in(value: impl Into<Array<'a>>) -> Self {
+        Op::NotIn(value.into())
+    }
+    pub fn like(pattern: &'a str) -> Self {
+        Op::Like(pattern)
+    }
+    pub fn not(value: impl Into<Value<'a>>) -> Self {
+        Op::Not(value.into())
+    }
+    pub fn case(case: Case<'a>) -> Self {
+        Op::Case(case)
+    }
+    pub fn none() -> Self {
+        Op::None
+    }
+
 }
 
 impl<'a> Display for Op<'a> {

@@ -1,24 +1,7 @@
 use std::fmt::Display;
 
-pub enum Func<'a> {
-    Count(&'a str),
-    Sum(&'a str),
-    Avg(&'a str),
-    Min(&'a str),
-    Max(&'a str),
-}
 
-impl<'a> ToString for Func<'a> {
-    fn to_string(&self) -> String {
-        match self {
-            Func::Count(v) => format!("COUNT({})", v),
-            Func::Sum(v) => format!("SUM({})", v),
-            Func::Avg(v) => format!("AVG({})", v),
-            Func::Min(v) => format!("MIN({})", v),
-            Func::Max(v) => format!("MAX({})", v),
-        }
-    }
-}
+
 
 pub enum Value<'a> {
     I32(i32),
@@ -30,13 +13,8 @@ pub enum Value<'a> {
     String(String),
     Str(&'a str),
     Bool(bool),
-    Param,
-}
-
-impl<'a> Value<'a> {
-    pub fn param_str() -> &'a str {
-        PARAM
-    }
+    // if param be empty str, automatic set placeholder for database, else set your placeholder
+    Param(&'a str),
 }
 
 impl<'a> Display for Value<'a> {
@@ -54,13 +32,11 @@ impl<'a> Display for Value<'a> {
                 true => write!(f, "TRUE"),
                 false => write!(f, "FALSE"),
             },
-            Value::Param => write!(f, "{}", PARAM),
+            Value::Param(v) => write!(f, "{}", v),
         }
     }
 }
 
-pub const PARAM: &'static str = "_$$";
-pub const PARAM_STR: &'static str = "'_$$'";
 
 impl<'a> Into<Value<'a>> for &'a str {
     fn into(self) -> Value<'a> {
