@@ -1,4 +1,4 @@
-![JokerQuery](https://github.com/Rustixir/joker/blob/main/logo.png)
+![joker_query](https://github.com/Rustixir/joker/blob/main/logo.png)
 
 <div align="center">
   <!-- Downloads -->
@@ -9,10 +9,10 @@
 </div>
 
 
-# JokerQuery
+# joker_query
 
-The JokerQuery is a cute sql query builder
-with JokerQuery can implement most complex queries with sugar syntax
+The joker_query is most sugared query builder of Rust,
+with joker_query can implement most complex queries with sugar syntax
 
 # Features
 
