@@ -6,6 +6,17 @@ pub struct Array<'a> {
     pub array: Vec<Value<'a>>
 }
 
+impl<'a> Array<'a> {
+    pub fn new() -> Self {
+        Array { array: vec![] }
+    }
+
+    pub fn add(mut self, value: impl Into<Value<'a>>) -> Self {
+        self.array.push(value.into());
+        return self        
+    }
+}
+
 
 impl<'a> From<Vec<i32>> for Array<'a> {
     fn from(value: Vec<i32>) -> Self {
@@ -59,5 +70,11 @@ impl<'a> From<Vec<String>> for Array<'a> {
 impl<'a> From<Vec<Value<'a>>> for Array<'a> {
     fn from(value: Vec<Value<'a>>) -> Self {
         return Array { array: value }
+    }
+}
+
+impl<'a> Into<Vec<Value<'a>>> for Array<'a> {
+    fn into(self) -> Vec<Value<'a>> {
+        self.array
     }
 }

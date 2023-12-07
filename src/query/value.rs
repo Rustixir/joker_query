@@ -1,24 +1,9 @@
 use std::fmt::Display;
 
-pub enum Func<'a> {
-    Count(&'a str),
-    Sum(&'a str),
-    Avg(&'a str),
-    Min(&'a str),
-    Max(&'a str),
-}
+use super::{condition::Case, select::Select};
 
-impl<'a> ToString for Func<'a> {
-    fn to_string(&self) -> String {
-        match self {
-            Func::Count(v) => format!("COUNT({})", v),
-            Func::Sum(v) => format!("SUM({})", v),
-            Func::Avg(v) => format!("AVG({})", v),
-            Func::Min(v) => format!("MIN({})", v),
-            Func::Max(v) => format!("MAX({})", v),
-        }
-    }
-}
+
+
 
 pub enum Value<'a> {
     I32(i32),
@@ -30,13 +15,7 @@ pub enum Value<'a> {
     String(String),
     Str(&'a str),
     Bool(bool),
-    Param,
-}
-
-impl<'a> Value<'a> {
-    pub fn param_str() -> &'a str {
-        PARAM
-    }
+    Raw(String),
 }
 
 impl<'a> Display for Value<'a> {
@@ -48,19 +27,17 @@ impl<'a> Display for Value<'a> {
             Value::U64(v) => write!(f, "{}", v),
             Value::F32(v) => write!(f, "{}", v),
             Value::F64(v) => write!(f, "{}", v),
+            Value::Raw(v) => write!(f, "{}", v),
             Value::String(v) => write!(f, "'{}'", v),
             Value::Str(v) => write!(f, "'{}'", v),
             Value::Bool(v) => match v {
                 true => write!(f, "TRUE"),
                 false => write!(f, "FALSE"),
-            },
-            Value::Param => write!(f, "{}", PARAM),
+            }
         }
     }
 }
 
-pub const PARAM: &'static str = "_$$";
-pub const PARAM_STR: &'static str = "'_$$'";
 
 impl<'a> Into<Value<'a>> for &'a str {
     fn into(self) -> Value<'a> {
@@ -95,5 +72,16 @@ impl<'a> Into<Value<'a>> for f64 {
 impl<'a> Into<Value<'a>> for bool {
     fn into(self) -> Value<'a> {
         Value::Bool(self)
+    }
+}
+impl<'a> Into<Value<'a>> for Case<'a> {
+    fn into(self) -> Value<'a> {
+        Value::Raw(format!("{}", self))
+    }
+}
+
+impl<'a> Into<Value<'a>> for Select<'a> {
+    fn into(self) -> Value<'a> {
+        Value::Raw(format!("(\n {} \n)", self))
     }
 }

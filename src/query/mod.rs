@@ -8,7 +8,9 @@ pub mod operator;
 pub mod condition;
 pub mod having;
 pub mod array;
-pub mod statement;
-
-
-pub use dashmap::mapref::one::Ref;
+pub mod func;
+pub mod insert;
+pub mod update;
+pub mod where_cond;
+pub mod set;
+pub mod delete;
