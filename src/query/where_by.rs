@@ -1,6 +1,6 @@
 use std::fmt::Display;
 
-use super::{select::Select, operator::Op, expression::Exp};
+use super::{select::Select, operator::Op, expression::Exp, where_cond::WhereOwner};
 
 
 pub enum CondSep {
@@ -38,11 +38,17 @@ pub struct Where<'a> {
     
 }
 
+impl<'a> Into<Select<'a>> for Where<'a> {
+    fn into(self) -> Select<'a> {
+        self.selector
+    }
+}
+
 impl<'a> Where<'a> {
     
     pub fn new(selector: Select<'a>, left: &'a str, op: Op<'a>) -> Self {
         let mut tmp = Where { selector };
-        tmp.selector.whereas.push(WhereInfo { 
+        tmp.selector.push(WhereInfo { 
             exp: Exp::new(left, op), 
             seperator: None 
         });
@@ -50,9 +56,9 @@ impl<'a> Where<'a> {
     }
 
     pub fn and(mut self, left: &'a str, op: Op<'a>) -> Self {
-        let len = self.selector.whereas.len();
-        self.selector.whereas[len-1].seperator = Some(CondSep::And);
-        self.selector.whereas.push(WhereInfo { 
+        let len = self.selector.len();
+        self.selector.set_seperator(len - 1, CondSep::And);
+        self.selector.push(WhereInfo { 
             exp: Exp::new(left, op), 
             seperator: None 
         });
@@ -60,9 +66,9 @@ impl<'a> Where<'a> {
     }
     
     pub fn or(mut self, left: &'a str, op: Op<'a>) -> Self {
-        let len = self.selector.whereas.len();
-        self.selector.whereas[len-1].seperator = Some(CondSep::And);
-        self.selector.whereas.push(WhereInfo { 
+        let len = self.selector.len();
+        self.selector.set_seperator(len - 1, CondSep::Or);
+        self.selector.push(WhereInfo { 
             exp: Exp::new(left, op), 
             seperator: None 
         });
@@ -70,9 +76,9 @@ impl<'a> Where<'a> {
     }
 
     pub fn not(mut self, left: &'a str, op: Op<'a>) -> Self {
-        let len = self.selector.whereas.len();
-        self.selector.whereas[len-1].seperator = Some(CondSep::Not);
-        self.selector.whereas.push(WhereInfo { 
+        let len = self.selector.len();
+        self.selector.set_seperator(len - 1, CondSep::Not);
+        self.selector.push(WhereInfo { 
             exp: Exp::new(left, op), 
             seperator: None 
         });

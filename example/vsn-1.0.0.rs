@@ -44,8 +44,6 @@ mod tests {
             .limit(10)
             .offset(5)
             .build();
-        
-
 
         assert_eq!(query.trim(), result.trim());
         println!("\n{}\n", query);
@@ -54,16 +52,15 @@ mod tests {
 
     #[test]
     fn select_with_source() {
-
         let query = 
         Select::
             cols(vec!["id", "age", "fullname"])
             .distinct()
             .from_subquery(
                 Select::
-                        cols(vec!["id", "age", "fullname"])
-                        .from("another_table")
-                        .where_by("age", op::gt(22))
+                    cols(vec!["id", "age", "fullname"])
+                    .from("another_table")
+                    .where_by("age", op::gt(22))
             )
             .where_by("age", op::between(10, 25))
             .order_by_desc("age")
@@ -75,14 +72,11 @@ mod tests {
 
     }
 
-
-
-
-
     #[test]
     fn insert() {
         let query = 
-            Insert::into("customer").cols(vec!["id", "age", "fullname"])
+            Insert::into("customer")
+                .cols(vec!["id", "age", "fullname"])
                 .value(Array::new().add("766dc50e").add(25).add("Danyal"))
                 .build();
 
@@ -106,8 +100,6 @@ mod tests {
 
     #[test]
     fn insert_value_select() {
-
-
         let query = 
             Insert::into("customer").cols(vec!["id", "age", "fullname"])
                 .source(
@@ -123,7 +115,6 @@ mod tests {
 
     #[test]
     pub fn update() {
-
         let query = 
          Update::table("customer")
             .set(vec![Pair::from("age", 100), Pair::from("fullname", "DanyalMh")])
@@ -136,7 +127,6 @@ mod tests {
 
     #[test]
     pub fn delete() {
-
         let query = 
             Delete::from("customer")
                 .where_by("fullname", op::neq("DanyalMh"))
@@ -149,7 +139,6 @@ mod tests {
 
     #[test]
     pub fn delete_with_sub_query() {
-
         let query = 
             Delete::from("customer")
                 .where_by("age", op::lt(

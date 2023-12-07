@@ -1,5 +1,7 @@
 use std::fmt::Display;
 
+use super::{condition::Case, select::Select};
+
 
 
 
@@ -13,8 +15,7 @@ pub enum Value<'a> {
     String(String),
     Str(&'a str),
     Bool(bool),
-    // if param be empty str, automatic set placeholder for database, else set your placeholder
-    Param(&'a str),
+    Raw(String),
 }
 
 impl<'a> Display for Value<'a> {
@@ -26,13 +27,13 @@ impl<'a> Display for Value<'a> {
             Value::U64(v) => write!(f, "{}", v),
             Value::F32(v) => write!(f, "{}", v),
             Value::F64(v) => write!(f, "{}", v),
+            Value::Raw(v) => write!(f, "{}", v),
             Value::String(v) => write!(f, "'{}'", v),
             Value::Str(v) => write!(f, "'{}'", v),
             Value::Bool(v) => match v {
                 true => write!(f, "TRUE"),
                 false => write!(f, "FALSE"),
-            },
-            Value::Param(v) => write!(f, "{}", v),
+            }
         }
     }
 }
@@ -71,5 +72,16 @@ impl<'a> Into<Value<'a>> for f64 {
 impl<'a> Into<Value<'a>> for bool {
     fn into(self) -> Value<'a> {
         Value::Bool(self)
+    }
+}
+impl<'a> Into<Value<'a>> for Case<'a> {
+    fn into(self) -> Value<'a> {
+        Value::Raw(format!("{}", self))
+    }
+}
+
+impl<'a> Into<Value<'a>> for Select<'a> {
+    fn into(self) -> Value<'a> {
+        Value::Raw(format!("(\n {} \n)", self))
     }
 }

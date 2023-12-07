@@ -4,13 +4,17 @@ use super::{
     join::{Join, JoinInfo, JoinType},
     operator::Op,
     order_by::{Order, OrderType},
-    where_by::{Where, WhereInfo},
+    where_by::{Where, WhereInfo, CondSep}, where_cond::WhereOwner, value::Value,
 };
 
 
+enum TableSource<'a> {
+    Name(&'a str),
+    SubQuery(Value<'a>)
+}
 
 pub struct Select<'a> {
-    pub table: &'a str,
+    table: TableSource<'a>,
     pub distinct: Option<()>,
     pub cols: Vec<&'a str>,
     pub joins: Vec<JoinInfo<'a>>,
@@ -20,6 +24,20 @@ pub struct Select<'a> {
     pub orders: Vec<Order<'a>>,
     pub limit: Option<u32>,
     pub offset: Option<u32>,
+}
+
+impl<'a> WhereOwner<'a> for Select<'a> {
+    fn set_seperator(&mut self, index: usize, sep: CondSep) {
+        self.whereas[index].seperator = Some(sep);
+    }
+
+    fn push(&mut self, where_info: WhereInfo<'a>) {
+        self.whereas.push(where_info);
+    }
+
+    fn len(&self) -> usize {
+        self.whereas.len()
+    }
 }
 
 
@@ -39,7 +57,14 @@ impl<'a> Display for Select<'a> {
                 let _ = write!(f, ", ");
             }
         });
-        let _ = write!(f, " FROM {}", self.table);
+        match &self.table {
+            TableSource::Name(tab) => {
+                let _ = write!(f, " FROM {}", tab);
+            }
+            TableSource::SubQuery(q) => {
+                let _ = write!(f, " FROM {}", q);
+            }
+        }
 
         self.joins.iter().for_each(|c| {
             let _ = write!(f, "{}", c);
@@ -96,7 +121,7 @@ impl<'a> Select<'a> {
         Select {
             distinct: None,
             cols: vec![],
-            table: "",
+            table: TableSource::Name(""),
             joins: vec![],
             whereas: vec![],
             groups: vec![],
@@ -128,7 +153,13 @@ impl<'a> Select<'a> {
     }
 
     pub fn from(mut self, table: &'a str) -> Self {
-        self.table = table;
+        self.table = TableSource::Name(table);
+        return self;
+    }
+
+    pub fn from_subquery(mut self, table: impl Into<Select<'a>>) -> Self {
+        let select: Select<'a> = table.into();
+        self.table = TableSource::SubQuery(select.into());
         return self;
     }
 
@@ -163,8 +194,7 @@ impl<'a> Select<'a> {
         return self;
     }
 
-    pub fn having(self, left: &'a str, op: Op<'a>) -> Having<'a> 
-    where{
+    pub fn having(self, left: &'a str, op: Op<'a>) -> Having<'a> {
         Having::new(self, left, op)
     }
 
@@ -183,7 +213,6 @@ impl<'a> Select<'a> {
     pub fn build(&self) -> String {
         format!("{}", self)
     }
-
 
 
 }
