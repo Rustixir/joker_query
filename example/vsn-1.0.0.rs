@@ -118,8 +118,7 @@ mod tests {
         let query = 
          Update::table("customer")
             .set(vec![Pair::from("age", 100), Pair::from("fullname", "DanyalMh")])
-            .where_by("id", op::eq(100))
-                .and("fullname", op::not("DanyalMh"))
+            .where_by("id", op::eq(100)).and("fullname", op::not("DanyalMh"))
             .build();
             
         println!("\n{}\n", query)
@@ -129,8 +128,7 @@ mod tests {
     pub fn delete() {
         let query = 
             Delete::from("customer")
-                .where_by("fullname", op::neq("DanyalMh"))
-                    .or("age", op::not_between(23, 25))
+                .where_by("fullname", op::neq("DanyalMh")).or("age", op::not_between(23, 25))
                 .build();
 
         println!("\n{}\n", query)
@@ -141,9 +139,7 @@ mod tests {
     pub fn delete_with_sub_query() {
         let query = 
             Delete::from("customer")
-                .where_by("age", op::lt(
-                    Select::cols(vec!["MIN(age)"]).from("athele")
-                ))
+                .where_by("age", op::lt(Select::cols(vec!["MIN(age)"]).from("athele")))
                 .build();
 
         println!("\n{}\n", query)
